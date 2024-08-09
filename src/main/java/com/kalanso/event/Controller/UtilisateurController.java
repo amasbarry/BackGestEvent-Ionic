@@ -2,10 +2,10 @@ package com.kalanso.event.Controller;
 
 import com.kalanso.event.Model.*;
 import com.kalanso.event.Service.ContexHolder;
+import com.kalanso.event.Service.StorageService;
 import com.kalanso.event.Service.Utilisateur_service;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,59 +18,15 @@ import java.util.List;
 @RequestMapping("gestEvent/user")
 @AllArgsConstructor
 public class UtilisateurController {
+    private StorageService service;
+    private Utilisateur_service utilisateurService;
+    private ContexHolder contexHolder;
 
     @PostMapping("/CreerClient")
     public Client creerClient(@RequestBody Client client){
         return utilisateurService.creerClient(client);
     }
 
-
-    @PostMapping(value = "/CreerCliente", consumes = "multipart/form-data")
-    public ResponseEntity<String> creerClient(
-            @RequestParam("nom") String nom,
-            @RequestParam("prenom") String prenom,
-            @RequestParam("email") String email,
-            @RequestParam("motDePasse") String motDePasse,
-            @RequestParam("telephone") String telephone,
-            @RequestParam(value = "image", required = false) MultipartFile imageFile) throws IOException {
-
-        // Validation des données du client
-        if (nom == null || prenom == null || email == null || motDePasse == null || telephone == null) {
-            return new ResponseEntity<>("Erreur : Tous les champs doivent être remplis.", HttpStatus.BAD_REQUEST);
-        }
-
-        Client client = new Client();
-        client.setNom(nom);
-        client.setPrenom(prenom);
-        client.setEmail(email);
-        client.setMotDePasse(motDePasse);
-        client.setTelephone(telephone);
-
-        if (imageFile != null && !imageFile.isEmpty()) {
-            // Vérifier le type MIME du fichier
-            String contentType = imageFile.getContentType();
-            if (contentType == null || (!contentType.equals("image/png") && !contentType.equals("image/jpeg"))) {
-                return new ResponseEntity<>("Erreur : Format d'image non autorisé. Formats autorisés : PNG, JPG.", HttpStatus.BAD_REQUEST);
-            }
-
-            // Vérifier l'extension du fichier
-            String filename = imageFile.getOriginalFilename();
-            if (filename != null) {
-                String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
-                if (!extension.equals("png") && !extension.equals("jpg") && !extension.equals("jpeg")) {
-                    return new ResponseEntity<>("Erreur : Extension de fichier non autorisée. Formats autorisés : PNG, JPG.", HttpStatus.BAD_REQUEST);
-                }
-            }
-
-            // Convertir le fichier en tableau de bytes et l'ajouter au client
-            client.setImage(imageFile.getBytes());
-        }
-
-        // Appel du service pour créer le client
-        utilisateurService.creerClient(client);
-
-        return new ResponseEntity<>("Client créé avec succès !", HttpStatus.CREATED);
-    }
 
     @GetMapping("/clients/{id}")
     public ResponseEntity<Client> getClientById(@PathVariable Long id) {
@@ -120,8 +76,6 @@ public class UtilisateurController {
 
 
 
-    private Utilisateur_service utilisateurService;
-    private ContexHolder contexHolder;
 
     @PostMapping("/CreerAdmin")
     public Admin CreerAdmin(@RequestBody Admin admin){
@@ -175,5 +129,7 @@ public class UtilisateurController {
         return null; // ou une réponse appropriée en cas d'absence d'utilisateur connecté*/
         return contexHolder.utilisateur();
     }
+
+
 
 }

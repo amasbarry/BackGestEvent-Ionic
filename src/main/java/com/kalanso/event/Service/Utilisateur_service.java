@@ -23,6 +23,4 @@ public interface Utilisateur_service {
     Client updateClient(Client client);
 
     void deleteClient(Long id);
-
-
 }

@@ -2,10 +2,7 @@ package com.kalanso.event.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -15,6 +12,7 @@ import java.util.List;
 @Data
 @Getter
 @Setter
+
 public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +24,11 @@ public class Utilisateur {
 
     @Column(unique = true)
     private String telephone;
+    private String name;
+    private String type;
     @Lob
-    @Column(length = 1000)
-    private byte[] image; // Champ pour l'image en tant que tableau de bytes
-
+    @Column(name = "imagedata",length = 1000, unique = true)
+    private byte[] imageData;
     //@Column(unique = true)
     private String motDePasse;
 

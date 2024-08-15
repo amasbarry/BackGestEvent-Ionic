@@ -1,6 +1,8 @@
 package com.kalanso.event.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.kalanso.event.Model.*;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -21,6 +23,7 @@ public class Utilisateur {
     private Integer id;
     private String nom;
     private String prenom;
+
     @Column(unique = true)
     private String email;
 
@@ -34,19 +37,23 @@ public class Utilisateur {
     @JoinColumn(name = "role_id")
     private RoleUser role;
 
-    @OneToMany(mappedBy = "utilisateur")
+    @ManyToOne
+    @JoinColumn(name = "image_id")
+    private ImageData imageData;
+
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("utilisateur")
     private List<Evenement> evenement;
 
-    @OneToMany(mappedBy = "utilisateur")
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("utilisateur")
     private List<Reservation> reservation;
 
-    @OneToMany(mappedBy = "utilisateur")
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("utilisateur")
     private List<Notification> notification;
 
-    @OneToMany(mappedBy = "utilisateur")
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("utilisateur")
     private List<Presta> presta;
 }

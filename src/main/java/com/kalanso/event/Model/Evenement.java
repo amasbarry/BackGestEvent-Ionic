@@ -43,6 +43,7 @@ public class Evenement {
     @JsonIgnoreProperties({"utilisateur", "evenement"})
     private List<Notification> notification;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "evenement")
     private List<Derouler> derouler;
 

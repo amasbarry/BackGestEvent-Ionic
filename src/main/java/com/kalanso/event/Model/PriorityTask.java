@@ -1,6 +1,7 @@
 package com.kalanso.event.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class PriorityTask {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long Id;
     private String priority;
+    @JsonIgnore
     @OneToMany(mappedBy = "priority")
     private List<Taches> tache;
 

@@ -5,7 +5,6 @@ import com.kalanso.event.Model.*;
 import com.kalanso.event.Repository.RoleUserRepo;
 import com.kalanso.event.Repository.Utilisateur_repo;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +18,9 @@ public class user_service_impl implements Utilisateur_service {
     private Utilisateur_repo utilisateurRepo;
     private RoleUserRepo roleUserRepo;
 
-    @Override
-    public Client creerClient(Client client) {
-        client.setMotDePasse(passwordEncoder.encode(client.getMotDePasse()));
-        return utilisateurRepo.save(client);
-    }
+
+
+
 
     @Override
     public Gestionnaire CreerGestionnaire(Gestionnaire gestionnaire) {
@@ -39,6 +36,14 @@ public class user_service_impl implements Utilisateur_service {
         admin.setRole(roleUser);
         admin.setMotDePasse(passwordEncoder.encode(admin.getMotDePasse()));
         return utilisateurRepo.save(admin);
+    }
+    @Override
+    public Client creerClient(Client client) {
+
+        RoleUser roleUser = roleUserRepo.findByRole("CLIENT");
+        client.setRole(roleUser);
+        client.setMotDePasse(passwordEncoder.encode(client.getMotDePasse()));
+        return utilisateurRepo.save(client);
     }
 
     @Override
@@ -88,4 +93,5 @@ public class user_service_impl implements Utilisateur_service {
     public Utilisateur findByEmail(String password) {
         return utilisateurRepo.findByEmail(password).orElse(null);
     }
+
 }

@@ -31,9 +31,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((registry)->{
                     registry
-                            .requestMatchers("/gestEvent/user/CreerOrga").hasRole("GESTIONNAIRE")
-                            .requestMatchers("/gestEvent/event/addEvent/**", "/gestEvent/categories/**", "/gestEvent/lieu/**", "/gestEvent/prestateurs/**", "/gestEvent/reservation/**").hasAnyRole("ORGANISATEUR", "ADMIN", "GESTIONNAIRE")
-                            .requestMatchers("/gestEvent/**").hasRole("ADMIN")
+                          //  .requestMatchers("/gestEvent/user/CreerOrga").hasRole("GESTIONNAIRE")
+                           // .requestMatchers("/gestEvent/event/addEvent/**", "/gestEvent/categories/**", "/gestEvent/lieu/**", "/gestEvent/prestateurs/**", "/gestEvent/reservation/**").hasAnyRole("ORGANISATEUR", "ADMIN", "GESTIONNAIRE")
+                          .requestMatchers("/gestEvent/**").permitAll()
                             .anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults())

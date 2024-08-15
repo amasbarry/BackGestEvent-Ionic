@@ -30,8 +30,6 @@ public class RoleController {
         return roleService.ListeRole();
     }
 
-
-
     @DeleteMapping("/supCathegorie/{id}")
     public String SupCategorie(@PathVariable Long id) {
         return roleService.supprimer(id);
